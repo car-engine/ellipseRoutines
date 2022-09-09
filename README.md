@@ -35,6 +35,7 @@ plot(x_initial, y_initial, 'b.', 'DisplayName', 'Initial', 'HandleVisibility','o
 plot(x_davis, y_davis, 'r.', 'DisplayName', 'Davis');
 plot(x_berkeley, y_berkeley, 'm.','DisplayName', 'Berkeley');
 ```
+![](demo_images/demoPlot_averageEllipse.png)
 
 ## Heatmap generation using geolocation ellipses
 Given a set of geolocation points defined by cofidence ellipses, we want to generate a heatmap to determine the likely transmitter locations. The following computes the cumulative distribution function of the Gaussian distribution associated with each ellipse, for each grid point, to generate the heatmap.
@@ -54,8 +55,9 @@ heatmap2D_Gaussian = heatmap2Dpdf_Gaussian(gl_ellipses, nBins, rangeBins);
 figure; hold on; grid on; xlabel('Longitude'); ylabel('Latitude'); title('Gaussian heatmap');
 heatmap2D_handle = plotHeatmap2D(heatmap2D_Gaussian, rangeBins(1,:), rangeBins(2,:));
 ```
+![](demo_images/demoPlot_heatmap2D.png)
 
-We compare the results from ellipse averaging and Gaussian heatmap
+We can also compare the results from ellipse averaging and Gaussian heatmap
 ```matlab
 figure; hold on; grid on; xlabel('Longitude'); ylabel('Latitude'); title('Comparison of ellipse averaging and Gaussian heatmap'); legend;
 
@@ -67,3 +69,4 @@ plot(x_berkeley, y_berkeley, 'm.','DisplayName', 'Berkeley');
 heatmap2D_handle = plotHeatmap2D(heatmap2D_Gaussian, rangeBins(1,:), rangeBins(2,:));
 uistack(heatmap2D_handle,'bottom');
 ```
+![](demo_images/demoPlot_comparisonEllipseHeatmap.png)
