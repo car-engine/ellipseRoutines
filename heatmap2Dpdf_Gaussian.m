@@ -30,7 +30,7 @@ function heatmap2D_Gaussian = heatmap2Dpdf_Gaussian(input, nBins, rangeBins, opt
         nBins (1,2) double
         rangeBins (2,2) double
         options.method {mustBeMember(options.method,['full','sampled'])} = 'full'
-        options.maxGrid int16 = 15
+        options.maxGrid double = 15
         options.norm logical = 0 
         
     end
@@ -38,8 +38,8 @@ function heatmap2D_Gaussian = heatmap2Dpdf_Gaussian(input, nBins, rangeBins, opt
     nBinLat = nBins(1);
     nBinLong = nBins(2);
 
-    rangeBinLat = rangeBins(3,:);
-    rangeBinLong = rangeBins(4,:);
+    rangeBinLat = rangeBins(1,:);
+    rangeBinLong = rangeBins(2,:);
 
     % Check if input is valid (within rangeBins)
     if (~isempty(find(input(:,1)<rangeBinLat(1))) || ~isempty(find(input(:,1)>rangeBinLat(2))))
@@ -214,7 +214,7 @@ function heatmap2D_Gaussian = heatmap2Dpdf_Gaussian(input, nBins, rangeBins, opt
     
     % Normalise if desired
     if options.norm
-        heatmap2D_Gaussian = heatmap2D_Gaussian/(sum(sum(heatmap2D_Gaussian));
+        heatmap2D_Gaussian = heatmap2D_Gaussian/(sum(sum(heatmap2D_Gaussian)));
     end
     
 end

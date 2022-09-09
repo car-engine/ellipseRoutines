@@ -9,9 +9,17 @@
 
 %% Begin function
 
-function heatmap_handle = plotHeatmap2D(heatmap2D_Gaussian, rangeLat, rangeLong)
+function heatmap2D_handle = plotHeatmap2D(heatmap2D_Gaussian, rangeLat, rangeLong)
 
-    heatmap_handle = imagesc('XData',rangeLong,'YData',rangeLat,'CData', heatmap2D_Gaussian); 
+    arguments
+    
+        heatmap2D_Gaussian (:,:) double
+        rangeLat (1,2) double
+        rangeLong (1,2) double
+        
+    end
+
+    heatmap2D_handle = imagesc('XData',rangeLong,'YData',rangeLat,'CData', heatmap2D_Gaussian); 
     ylim(rangeLat); xlim(rangeLong);
     colorbar; colormap(jet);
 
