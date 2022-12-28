@@ -2,7 +2,7 @@
 MATLAB routines for ellipse and geolocation-related algorithms. Sample code can be found in ***demo_ellipseRoutines.m***.
 
 ## Ellipse averaging
-Given a set of geolocation points, defined by confidence ellipses, we want to combine these ellipses in a mathematically sensible fashion to produce a more confident estimate. For the mathematics behind the different formulations, please refer to *Combining Error Ellipses*, Davis J.E. (2007) and *Data Analysis Toolkit 12: Weighted averages and their uncertainties*, Kirchner J (2006). A walkthrough is given [here](https://gitea.crlnet.dso/lken/pydsproutines/src/branch/master/EllipticalDistributionsAndCombinations.ipynb).
+Given a set of geolocation points, defined by confidence ellipses, we want to combine these ellipses in a mathematically sensible fashion to produce a more confident estimate. For the mathematics behind the different formulations, please refer to *Combining Error Ellipses*, Davis J.E. (2007) and *Data Analysis Toolkit 12: Weighted averages and their uncertainties*, Kirchner J (2006). A walkthrough is given [here](https://github.com/car-engine/pydsproutines/blob/master/EllipticalDistributionsAndCombinations.ipynb).
 
 ```matlab
 % Load toy ellipse data
