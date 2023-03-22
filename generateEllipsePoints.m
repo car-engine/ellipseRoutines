@@ -1,4 +1,7 @@
 %% generateEllipsePoints
+% Perry Hong 
+% 22 March 2023
+%
 % Generate set of x and y points for plotting of ellipses
 % Inputs arguments are all L x 1 column vectors, where L refers to the number of input ellipses
 % Angle in degrees, defined ACW from x-axis

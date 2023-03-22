@@ -1,13 +1,13 @@
 %% averageEllipses
 % Perry Hong
-% 8 Sep 2022
+% 22 March 2023
 %
 % Computes averaging of ellipses on WGS84 using two methods
 % Davis: Combining Error Ellipses, Davis J.E. (2007) - cxc.cda.harvard.edu/csc/memos/files/Davis_ellipse.pdf
 % Berkeley: Data Analysis Toolkit 12: Weighted averages and their uncertainties, Kirchner J (2006)
 % semi-major = x-axis
 % angle is defined as the angle semi-major axis makes wrt to x-axis, anti-clockwise
-% Inputs: mu = [long, lat]; major, minor (95% 2D confidence) in meters; angle in degrees
+% Inputs: mu = [long lat]; major, minor (95% 2D confidence) in meters; angle in degrees
 
 %% Begin function
 function [mu_weighted_mean, sigma_davis, sigma_berkeley] = averageEllipses(mu, major, minor, angles)
@@ -34,7 +34,7 @@ function [mu_weighted_mean, sigma_davis, sigma_berkeley] = averageEllipses(mu, m
     % Here, our semi-major/minor axes are at an angle - we have neglected this and arbitrarily chosen to convert the semi-major along the longitude and semi-minor along the latitude
     % For the error ellipse sizes we are working with, the error is small
     for idx = 1:L 
-        [minor_LL(idx,1), major_LL(idx,1)] = convertDisttoLL(minor(idx), major(idx), mu(idx,2));
+        [major_LL(idx,1), minor_LL(idx,1)] = convertDisttoLL(major(idx), minor(idx), mu(idx,2));
     end
    
     % Calculate covariance matrices

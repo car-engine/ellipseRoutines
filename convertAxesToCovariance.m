@@ -1,4 +1,7 @@
 %% convertAxesToCovariance
+% Perry Hong 
+% 22 March 2023
+%
 % Coverts a given ellipse defined by its semi-major, semi-minor and angle
 % (ACW w.r.t x-axis, in degrees), return the covariance matrix of its
 % underlying Gaussian distribution

@@ -1,6 +1,6 @@
 %% heatmap2Dpdf_Gaussian
 % Perry Hong
-% 8 September 2022
+% 22 March 2023
 %
 % Full: Does full gaussian integral for each grid and adds that value to that grid on the heatmap (EXACT)
 % Sampled: Sampled gaussian integral 
@@ -9,11 +9,11 @@
 %
 % ==== Input arguments ====
 % input = L x 5 vector 
-% [ellipseLat ellipseLong ellipseMajor ellipseMinor ellipseAngle]
+% [ellipseLong ellipseLat ellipseMajor ellipseMinor ellipseAngle]
 % ellipseMajor and ellipseMinor (95% 2D confidence) in m
 % ellipseAngle ACW from x-axis (major is x-axis) in degrees
-% nBins = [nBinsLat nBinsLong]
-% rangeBins = [rangeLatLower rangeLatUpper; rangeLongLower rangeLongUpper]
+% nBins = [nBinsLong nBinsLat]
+% rangeBins = [rangeLongLower rangeLongUpper; rangeLatLower rangeLatUpper]
 %
 % === Optional arguments ===
 % method = integration method: 'full', 'sampled'
@@ -35,31 +35,31 @@ function heatmap2D_Gaussian = heatmap2Dpdf_Gaussian(input, nBins, rangeBins, opt
         
     end
 
-    nBinLat = nBins(1);
-    nBinLong = nBins(2);
+    nBinLong = nBins(1);
+    nBinLat = nBins(2);
 
-    rangeBinLat = rangeBins(1,:);
-    rangeBinLong = rangeBins(2,:);
+    rangeBinLong = rangeBins(1,:);
+    rangeBinLat = rangeBins(2,:);
 
     % Check if input is valid (within rangeBins)
-    if (~isempty(find(input(:,1)<rangeBinLat(1))) || ~isempty(find(input(:,1)>rangeBinLat(2))))
-        error('Input has a value outside of defined latitude range.');
-    elseif (~isempty(find(input(:,2)<rangeBinLong(1))) || ~isempty(find(input(:,2)>rangeBinLong(2))))
+    if (~isempty(find(input(:,1)<rangeBinLong(1))) || ~isempty(find(input(:,1)>rangeBinLong(2))))
         error('Input has a value outside of defined longitude range.');
+    elseif (~isempty(find(input(:,2)<rangeBinLat(1))) || ~isempty(find(input(:,2)>rangeBinLat(2))))
+        error('Input has a value outside of defined latitude range.');
     end
 
     % Resolution of each bin
-    resBinLat = (rangeBinLat(2)-rangeBinLat(1))/nBinLat;
     resBinLong = (rangeBinLong(2)-rangeBinLong(1))/nBinLong;
-
+    resBinLat = (rangeBinLat(2)-rangeBinLat(1))/nBinLat;
+    
     L = size(input, 1);
 
     % Shift latitude and longitude values to [0 x]
-    shift = [ones(L, 1)*rangeBinLat(1) ones(L,1)*rangeBinLong(1) zeros(L,1) zeros(L,1) zeros(L,1)];
+    shift = [ones(L, 1)*rangeBinLong(1) ones(L,1)*rangeBinLat(1) zeros(L,1) zeros(L,1) zeros(L,1)];
     inputShifted = input - shift;
 
     % Initialise output
-    heatmap2D_Gaussian = zeros(nBinLat, nBinLong);
+    heatmap2D_Gaussian = zeros(nBinLat, nBinLong); % this has to be [lat long] because of how MATLAB indexes (rows then columns)
     
     % Evaluate each ellipse
     progbar = waitbar(0, 'Generating heatmap...');
@@ -68,16 +68,16 @@ function heatmap2D_Gaussian = heatmap2Dpdf_Gaussian(input, nBins, rangeBins, opt
 
         tEllipseStart = tic;
         
-        currentEllipseLat = inputShifted(n,1);
-        currentEllipseLong = inputShifted(n,2);
+        currentEllipseLong = inputShifted(n,1);
+        currentEllipseLat = inputShifted(n,2);
         currentEllipseMajorRaw = inputShifted(n,3);
         currentEllipseMinorRaw = inputShifted(n,4);
         currentEllipseAngleRaw = inputShifted(n,5);
-        
+       
         % Bins are defined w.r.t. to the top right = bottom left bin is (1, 1)
-        idxBinLat = ceil(currentEllipseLat/resBinLat);
         idxBinLong = ceil(currentEllipseLong/resBinLong);  
-
+        idxBinLat = ceil(currentEllipseLat/resBinLat);
+        
         % Edge cases: should correspond to index 1 or binMax as well
         if idxBinLat == 0 idxBinLat = 1; end
         if idxBinLong == 0 idxBinLong = 1; end
@@ -92,7 +92,7 @@ function heatmap2D_Gaussian = heatmap2Dpdf_Gaussian(input, nBins, rangeBins, opt
         % Here, our semi-major/minor axes are at an angle - we have neglected this and arbitrarily chosen to convert the semi-major along the longitude and semi-minor along the latitude
         % For the error ellipse sizes we are working with (~20km max), the error is small
         trueEllipseLat = currentEllipseLat + rangeBinLat(1);                                
-        [currentEllipseMinor, currentEllipseMajor] = convertDisttoLL(currentEllipseMinorRaw, currentEllipseMajorRaw, trueEllipseLat);
+        [currentEllipseMajor, currentEllipseMinor] = convertDisttoLL(currentEllipseMajorRaw, currentEllipseMinorRaw, trueEllipseLat);
 
         % sigma11 and sigma22 in diagonal basis for the ellipse which is 0.95 cdf
         sigma1diag = currentEllipseMajor/sqrt(chi2inv(0.95, 2));

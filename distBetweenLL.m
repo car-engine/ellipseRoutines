@@ -1,6 +1,9 @@
 %% distBetweenLL
+% Perry Hong
+% 22 March 2023
+%
 % Evaluates the distance (m) between two LL coordinate points 
-% INPUT: coordinates = [lat long]
+% INPUT: coordinates = [long lat]
 % Assumes WGS84 spheroid
 % t = latitude in degrees
 % 1 deg latitude = 111132.92 - 559.82 cos(2t) + 1.175 cos(4t) - 0.0023 cos(6t)
@@ -9,10 +12,10 @@
 %% Begin function
 function distOut = distBetweenLL(coordinates1, coordinates2)
 
-    lat1 = coordinates1(1);
-    long1 = coordinates1(2);
-    lat2 = coordinates2(1);
-    long2 = coordinates2(2);
+    long1 = coordinates1(1);
+    lat1 = coordinates1(2);
+    long2 = coordinates2(1);
+    lat2 = coordinates2(2);
     
     averageLatRad = deg2rad((lat1 + lat2)/2);
 

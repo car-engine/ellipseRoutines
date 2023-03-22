@@ -1,4 +1,7 @@
 %% convertCovarianceToAxes
+% Perry Hong 
+% 22 March 2023
+%
 % Given the covariance matrix of a Gaussian distribution, output the
 % semi-major, semi-minor, and angle (ACQ w.r.t x-axis, in degrees) of an ellipse satisfying 
 % a given confidence interval
